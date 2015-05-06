@@ -21,13 +21,23 @@ Please see command details at [Pyenv Commands](https://github.com/yyuu/pyenv/blo
 Directories and files
 ----------------------
 
+For developer environment
+~~~~~~~~~~~~~~~~~~~~~~~~~
 * /home/pyuser/        - working user
 * /home/pyuser/.pyenv/ - pyenv files
+
+For production environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* /opt/pyapp/     - application deployment
+* /opt/pyenv/     - PYENV_ROOT
+
 
 Guest user
 ------------
 
-Guest user has sudo privilege and you can easily add more packages
+Guest user 'pyuser' has sudo privilege and you can easily add more packages.
+In production package, guest user 'pyapp' has no sudo permission.
 
 
 Python Versions
@@ -36,28 +46,24 @@ Python Versions
 It has following python versions:
 
 * tag latest
-
   - Python 3.4.3, 2.7.9
   - PyPy  2.5.0
   - PyPy3 2.4.0
 
 * tag pypy
-
   - PyPy  2.5.0
 
 * tag pypy3
-
   - PyPy3 2.4.0
 
-* tag 3, 3.4
 
+* tag 3, 3.4
   - Python 3.4.3
 
 * tag 2, 2.7
-
   - Python 2.7.9
 
-ipython is also pre-installed.
+ipython is also pre-installed for py34.
 
 How to build
 --------------------
