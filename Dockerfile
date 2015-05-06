@@ -13,24 +13,14 @@
 #
 ####################################################
 #
-FROM eboraas/debian:jessie
+FROM miurahr/pyvenv-base
 MAINTAINER miurahr@linux.com
 
-## versions
+## known versions
 ENV PY3_VER 3.4.3
 ENV PY2_VER 2.7.9
 ENV PYPY3_VER pypy3-2.4.0
 ENV PYPY_VER  pypy-2.5.0
-
-## dependencies 
-RUN env DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get -q -y upgrade && \
-    apt-get -q -y install \
-      make build-essential llvm curl git sudo byobu \
-      libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
-      libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
-      libexpat1-dev libmpdec-dev libffi-dev libzmq3-dev pandoc mime-support locales-all && \
-    apt-get clean
 
 ## user setup
 RUN useradd -m pyuser && \
