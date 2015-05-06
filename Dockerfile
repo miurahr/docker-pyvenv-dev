@@ -44,6 +44,7 @@ WORKDIR /home/pyuser
 RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${HOME}/.pyenv && \
     echo 'export PYENV_ROOT=${HOME}/.pyenv' >> ${HOME}/.bashrc && \
     echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
+ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
 
 ## pyenv-virtualenv plugin
 RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
@@ -64,7 +65,6 @@ RUN pyenv global ${PY3_VER} && pip install -U pip && \
 ## working environment for developer
 RUN mkdir -p ${HOME}/workspace && \
     byobu-enable
-ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
 
 ## docker configurations
 VOLUME ["${HOME}/workspace"]
