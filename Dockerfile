@@ -21,6 +21,8 @@ COPY setup-venv.sh /tmp/
 RUN chmod +x /tmp/setup-venv.sh
 RUN /tmp/setup-venv.sh
 
+RUN apt-get -q -y install byobu && apt-get clean
+
 USER pyuser
 ENV HOME /home/pyuser
 ENV USER pyuser
