@@ -35,19 +35,20 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get update && \
 ## user setup
 RUN useradd -G sudo -m pyuser && \
     echo "Defaults    !authenticate" >> /etc/sudoers
+
 USER pyuser
 ENV HOME /home/pyuser
 ENV USER pyuser
+ENV PYENV_ROOT ${HOME}/.pyenv
 WORKDIR /home/pyuser
 
 ## pyenv setup
-RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${HOME}/.pyenv && \
-    echo 'export PYENV_ROOT=${HOME}/.pyenv' >> ${HOME}/.bashrc && \
+RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT} && \
     echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
-ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
+ENV PATH ${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}
 
 ## pyenv-virtualenv plugin
-RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
+RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 
 ## install python2/python3/pypy/pypy3
 RUN pyenv install ${PY3_VER}         && \
