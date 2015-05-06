@@ -3,7 +3,7 @@ docker-pyvenv
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=miurahr&url=https://github.com/miurahr/docker-pyvenv)
 
-Python venv template for Python application development
+Python application development environment based on pyenv
 
 
 How to use
@@ -15,17 +15,20 @@ You can get the image from docker hub.
 $ docker pull miurahr/pyvenv
 ```
 
-before using python in docker guest, please activate python environment;
+Login and activating python
 
 ```
-source ~/.virtualenvs/py34/bin/activate
+
 ```
+
+Please refer command details at Pyenv Commands(https://github.com/yyuu/pyenv/blob/master/COMMANDS.md)
 
 
 Directories and files
 ----------------------
 
-* /home/ubuntu/.virtualenvs/  -  python virtualenvs home
+* /home/pyuser/        - working user
+* /home/pyuser/.pyenv/ - pyenv files
 
 How to build
 --------------------

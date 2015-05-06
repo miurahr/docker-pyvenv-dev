@@ -1,38 +1,39 @@
-FROM ubuntu:14.04.2
+FROM eboraas/debian:jessie
 MAINTAINER miurahr@linux.com
 
-ENV PY_VER 3.4.3
+ENV PY3_VER 3.4.3
+ENV PY2_VER 2.7.9
 
+## dependencies 
 RUN env DEBIAN_FRONTEND=noninteractive apt-get update
-RUN env DEBIAN_FRONTEND=noninteractiv apt-get -y install \
-  build-essential \
-  curl \
-  libc6-dev libreadline-dev libz-dev libbz2-dev libncursesw5-dev \
-  libssl-dev libgdbm-dev libsqlite3-dev liblzma-dev tk-dev
+RUN env DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
+RUN env DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
+  build-essential curl git \
+  libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
+  libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
+  libexpat1-dev libmpdec-dev libffi-dev mime-support locales-all
+RUN env DEBIAN_FRONTEND=noninteractive apt-get clean
 
-RUN useradd -m ubuntu
+## user setup
+RUN useradd -G sudo -m pyuser
+USER pyuser
+ENV HOME /home/pyuser
+ENV USER pyuser
+WORKDIR /home/pyuser
+RUN mkdir -p ${HOME}/workspace
 
-USER ubuntu
-ENV HOME /home/ubuntu
-ENV USER ubuntu
+## pyenv setup
+RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${HOME}/.pyenv
+ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
+ENV PYENV_ROOT ${HOME}/.pyenv
+RUN echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
 
-WORKDIR /home/ubuntu
+## install python2/3
+RUN pyenv install ${PY3_VER}
+RUN pyenv install ${PY2_VER}
+RUN pyenv rehash
 
-## if you need to compile python from scratch
-RUN curl -sL https://www.python.org/ftp/python/${PY_VER}/Python-${PY_VER}.tar.xz  > Python-${PY_VER}.tar.xz && \
-    tar xf Python-${PY_VER}.tar.xz && \
-    (cd Python-${PY_VER} ; \
-    ./configure && make)
-
-RUN mkdir -p ${HOME}/.virtualenvs
-RUN (cd Python-${PY_VER}; ./python -m venv ${HOME}/.virtualenvs/py34)
-
-# activate
-RUN . ${HOME}/.virtualenvs/py34/bin/activate && \
-    pip install ipython
-
-USER root
-RUN apt-get clean && apt-get -y autoremove
-
-USER ubuntu
-
+## docker configuration
+USER pyuser
+VOLUME ["${HOME}/workspace"]
+ENTRYPOINT ["/bin/bash"]
