@@ -26,7 +26,7 @@ DEVELOPER_HOME=/home/${DEVELOPER}
 #
 #  only PY_VER defined, it build with python with PY_VER
 #  no varialble defined, it set default as follows:
-PY_VER=${-:3.4.3}
+PY_VER=${PY_VER:-3.4.3}
 
 if [ "${PY_VERS}" == "" ]; then
   echo "setup pyenv with Python ${PY_VER}."
