@@ -39,9 +39,13 @@ env DEBIAN_FRONTEND=noninteractive apt-get update
 env DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
 env DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
     make build-essential llvm curl git sudo \
+    libreadline6 zlib1g libbz2-1.0 libncursesw5 libssl1.0.0 \
+    libgdbm3 libdb5.3  libsqlite3-0 liblzma5 libtk8.6 \
+    libexpat1 libmpdec2 libffi6 \
     libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
     libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
-    libexpat1-dev libmpdec-dev libffi-dev libzmq3-dev pandoc mime-support locales-all
+    libexpat1-dev libmpdec-dev libffi-dev \
+    mime-support locales-all
 
 ## user setup
 useradd -m ${DEVELOPER}
@@ -91,7 +95,7 @@ fi
 env DEBIAN_FRONTEND=noninteractive apt-get -y remove git-core \
     libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
     libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
-    libexpat1-dev libmpdec-dev libffi-dev libzmq3-dev pandoc
+    libexpat1-dev libmpdec-dev libffi-dev
 env DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
 env DEBIAN_FRONTEND=noninteractive apt-get clean
 
