@@ -22,12 +22,13 @@ Directories and files
 ----------------------
 
 For developer environment
-~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
 * /home/pyuser/        - working user
 * /home/pyuser/.pyenv/ - pyenv files
 
 For production environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * /opt/pyapp/     - application deployment
 * /opt/pyenv/     - PYENV_ROOT
