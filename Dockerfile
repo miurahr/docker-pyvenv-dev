@@ -10,7 +10,7 @@ ENV PYPY_VER  2.5.0
 RUN env DEBIAN_FRONTEND=noninteractive apt-get update
 RUN env DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
 RUN env DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
-  build-essential curl git \
+  build-essential curl git sudo byobu \
   libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
   libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
   libexpat1-dev libmpdec-dev libffi-dev mime-support locales-all
@@ -29,6 +29,9 @@ RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${HOME}/.pyenv
 ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
 ENV PYENV_ROOT ${HOME}/.pyenv
 RUN echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
+
+## pyenv-virtualenv plugin
+git clone https://github.com/yyuu/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
 
 ## install python2/python3/pypy/pypy3
 RUN pyenv install ${PY3_VER}
