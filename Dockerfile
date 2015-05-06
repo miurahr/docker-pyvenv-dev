@@ -46,7 +46,7 @@ RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${HOME}/.pyenv
     echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
 
 ## pyenv-virtualenv plugin
-RUN git clone https://github.com/yyuu/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
+RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
 
 ## install python2/python3/pypy/pypy3
 RUN pyenv install ${PY3_VER}         && \
