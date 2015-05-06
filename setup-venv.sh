@@ -13,7 +13,7 @@
 # project home: github.com/miurahr/docker-pyvenv-dev
 #
 ####################################################
-
+set -e
 DEVELOPER=pyuser
 DEVELOPER_HOME=/home/${DEVELOPER}
 
@@ -45,7 +45,7 @@ env DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
     libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
     libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
     libexpat1-dev libmpdec-dev libffi-dev \
-    mime-support locales-all
+    mime-support
 
 ## user setup
 useradd -m ${DEVELOPER}
