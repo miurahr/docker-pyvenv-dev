@@ -26,14 +26,15 @@ ENV PYPY_VER  2.5.0
 RUN env DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get -q -y upgrade && \
     apt-get -q -y install \
-      build-essential curl git sudo byobu \
+      make build-essential llvm curl git sudo byobu \
       libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
       libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
       libexpat1-dev libmpdec-dev libffi-dev libzmq3-dev pandoc mime-support locales-all && \
     apt-get clean
 
 ## user setup
-RUN useradd -G sudo -m pyuser
+RUN useradd -G sudo -m pyuser && \
+    echo "Defaults    !authenticate" >> /etc/sudoers
 USER pyuser
 ENV HOME /home/pyuser
 ENV USER pyuser
@@ -41,9 +42,8 @@ WORKDIR /home/pyuser
 
 ## pyenv setup
 RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${HOME}/.pyenv && \
-    echo 'PYENV_ROOT ${HOME}/.pyenv' >> ${HOME}/.bashrc && \
+    echo 'export PYENV_ROOT=${HOME}/.pyenv' >> ${HOME}/.bashrc && \
     echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
-ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
 
 ## pyenv-virtualenv plugin
 RUN git clone https://github.com/yyuu/pyenv-virtualenv.git ${HOME}/.pyenv/plugins/pyenv-virtualenv
@@ -64,6 +64,7 @@ RUN pyenv global ${PY3_VER} && pip install -U pip && \
 ## working environment for developer
 RUN mkdir -p ${HOME}/workspace && \
     byobu-enable
+ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
 
 ## docker configurations
 VOLUME ["${HOME}/workspace"]
