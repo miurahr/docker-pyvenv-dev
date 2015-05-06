@@ -9,19 +9,13 @@ Python application development environment based on pyenv
 How to use
 -----------
 
-You can get the image from docker hub.
+Login, launch byobu and activating python
 
 ```
-$ docker pull miurahr/pyvenv
+$ docker exec -it miurahr/pyvenv
 ```
 
-Login and activating python
-
-```
-
-```
-
-Please refer command details at Pyenv Commands(https://github.com/yyuu/pyenv/blob/master/COMMANDS.md)
+Please see command details at [Pyenv Commands](https://github.com/yyuu/pyenv/blob/master/COMMANDS.md)
 
 
 Directories and files
@@ -29,6 +23,41 @@ Directories and files
 
 * /home/pyuser/        - working user
 * /home/pyuser/.pyenv/ - pyenv files
+
+Guest user
+------------
+
+Guest user has sudo privilege and you can easily add more packages
+
+
+Python Versions
+----------------------
+
+It has following python versions:
+
+* tag latest
+
+  - Python 3.4.3, 2.7.9
+  - PyPy  2.5.0
+  - PyPy3 2.4.0
+
+* tag pypy
+
+  - PyPy  2.5.0
+
+* tag pypy3
+
+  - PyPy3 2.4.0
+
+* tag 3, 3.4
+
+  - Python 3.4.3
+
+* tag 2, 2.7
+
+  - Python 2.7.9
+
+ipython is also pre-installed.
 
 How to build
 --------------------

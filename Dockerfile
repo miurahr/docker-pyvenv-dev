@@ -29,7 +29,7 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get update && \
       build-essential curl git sudo byobu \
       libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
       libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
-      libexpat1-dev libmpdec-dev libffi-dev mime-support locales-all && \
+      libexpat1-dev libmpdec-dev libffi-dev libzmq3-dev pandoc mime-support locales-all && \
     apt-get clean
 
 ## user setup
@@ -56,11 +56,14 @@ RUN pyenv install ${PY3_VER}         && \
     pyenv rehash
 
 ## default ${PY3_VER} and install ipython on ${PY3_VER}
-RUN pyenv global ${PY3_VER} && pip install -U pip && pip install ipython
+RUN pyenv global ${PY3_VER} && pip install -U pip && \
+    pip install ipython && \
+    pip install "ipython[test]" && \
+    iptest
 
 ## working environment for developer
-RUN mkdir -p ${HOME}/workspace
-RUN byobu-enable
+RUN mkdir -p ${HOME}/workspace && \
+    byobu-enable
 
 ## docker configurations
 VOLUME ["${HOME}/workspace"]
@@ -68,4 +71,5 @@ ENTRYPOINT ["/bin/bash"]
 
 ## now you can run here by 'docker run -it miurahr/pyvenv'
 ## It automatically launch shell and byobu.
-## don't forget add '-it' argument option.
+## Please don't forget add '-it'(interactive/terminal) argument option.
+## Docker will enter guest environment as non-login session.
