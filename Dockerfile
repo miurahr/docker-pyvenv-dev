@@ -3,6 +3,8 @@ MAINTAINER miurahr@linux.com
 
 ENV PY3_VER 3.4.3
 ENV PY2_VER 2.7.9
+ENV PYPY3_VER 2.4.0
+ENV PYPY_VER  2.5.0
 
 ## dependencies 
 RUN env DEBIAN_FRONTEND=noninteractive apt-get update
@@ -28,10 +30,15 @@ ENV PATH ${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
 ENV PYENV_ROOT ${HOME}/.pyenv
 RUN echo 'eval "$(pyenv init -)"' >> ${HOME}/.bashrc
 
-## install python2/3
+## install python2/python3/pypy/pypy3
 RUN pyenv install ${PY3_VER}
 RUN pyenv install ${PY2_VER}
+RUN pyenv install pypy3-${PYPY3_VER}
+RUN pyenv install pypy-${PYPY_VER}
 RUN pyenv rehash
+
+## default ${PY3_VER} and install ipython on ${PY3_VER}
+RUN pyenv global ${PY3_VER} && pip install -U pip && pip install ipython
 
 ## docker configuration
 USER pyuser
