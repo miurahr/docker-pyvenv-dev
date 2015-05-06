@@ -59,8 +59,7 @@ RUN pyenv install ${PY3_VER}         && \
 ## default ${PY3_VER} and install ipython on ${PY3_VER}
 RUN pyenv global ${PY3_VER} && pip install -U pip && \
     pip install ipython && \
-    pip install "ipython[test]" && \
-    iptest
+    pip install "ipython[test]"
 
 ## working environment for developer
 RUN mkdir -p ${HOME}/workspace && \
