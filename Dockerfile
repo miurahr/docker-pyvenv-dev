@@ -19,8 +19,8 @@ MAINTAINER miurahr@linux.com
 ## versions
 ENV PY3_VER 3.4.3
 ENV PY2_VER 2.7.9
-ENV PYPY3_VER 2.4.0
-ENV PYPY_VER  2.5.0
+ENV PYPY3_VER pypy3-2.4.0
+ENV PYPY_VER  pypy-2.5.0
 
 ## dependencies 
 RUN env DEBIAN_FRONTEND=noninteractive apt-get update && \
@@ -51,10 +51,10 @@ ENV PATH ${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}
 RUN git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 
 ## install python2/python3/pypy/pypy3
-RUN pyenv install ${PY3_VER}         && \
-    pyenv install ${PY2_VER}         && \
-    pyenv install pypy3-${PYPY3_VER} && \
-    pyenv install pypy-${PYPY_VER}   && \
+RUN pyenv install ${PY3_VER}   && \
+    pyenv install ${PY2_VER}   && \
+    pyenv install ${PYPY3_VER} && \
+    pyenv install ${PYPY_VER}  && \
     pyenv rehash
 
 ## default ${PY3_VER} and install ipython on ${PY3_VER}
