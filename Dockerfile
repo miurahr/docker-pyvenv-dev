@@ -29,7 +29,7 @@ ENV USER pyuser
 ENV PYENV_ROOT ${HOME}/.pyenv
 WORKDIR /home/pyuser
 RUN mkdir -p ${HOME}/workspace && \
-    byobu-enable
+    byobu-launcher-install -n
 
 VOLUME ["${HOME}/workspace"]
 ENTRYPOINT ["/bin/bash"]
