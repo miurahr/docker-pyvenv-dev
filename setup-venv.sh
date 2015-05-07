@@ -17,8 +17,6 @@ set -e
 DEVELOPER=pyuser
 DEVELOPER_HOME=/home/${DEVELOPER}
 
-# part1: install pytnon versions and cleanup
-
 # Environment variable for building
 #
 # if PY_VERS is not empty, it build all of python versions.
@@ -35,51 +33,31 @@ else
   echo "default version is ${PY_VER}."
 fi
 
-env DEBIAN_FRONTEND=noninteractive apt-get update
-env DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
-env DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
-    make build-essential llvm curl git sudo \
-    libreadline6 zlib1g libbz2-1.0 libncursesw5 libssl1.0.0 \
-    libgdbm3 libdb5.3  libsqlite3-0 liblzma5 libtk8.6 \
-    libexpat1 libmpdec2 libffi6 \
-    libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
-    libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
-    libexpat1-dev libmpdec-dev libffi-dev \
-    mime-support
-
-## user setup
-useradd -m ${DEVELOPER}
-echo "${DEVELOPER} ALL=(ALL) NOPASSWD: ALL" >>  /etc/sudoers
-
 PYENV_ROOT=${DEVELOPER_HOME}/.pyenv
-cd ${DEVELOPER_HOME}
 
-function run_as_user () {
-  sudo -u ${DEVELOPER} -E -H env PATH=${PATH} $*
-}
+run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
+run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 
-function append_bashrc () {
-  FILE=${DEVELOPER_HOME}/.bashrc
-  echo $* |sudo -u ${DEVELOPER} tee -a $FILE
-}
+RCFILE=${DEVELOPER_HOME}/.bashrc
+echo "export PYENV_ROOT=${PYENV_ROOT}" >> $RCFILE
+echo "export PATH=${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}" >> $RCFILE
+echo 'eval "$(pyenv init -)"' >> $RCFILE
+echo 'eval "$(pyenv-virtualenv-init -)"' >> $RCFILE
+source $RCFILE
+
+export PATH=${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}
+export HOME=${DEVELOPER_HOME}
 
 function install_python_version () {
   local ver=$1
 
-  run_as_user pyenv install $ver
-  run_as_user pyenv rehash
-  run_as_user pyenv global  $ver
-  run_as_user pip install -U pip
+  pyenv install $ver
+  pyenv rehash
+  pyenv global  $ver
+  pip install --upgrade pip
 }
 
-## pyenv setup
-run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
-append_bashrc "export PYENV_ROOT=${PYENV_ROOT}"
-append_bashrc "export PATH=${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
-append_bashrc 'eval "$(pyenv init -)"'
-
-## pyenv-virtualenv plugin
-run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
+cd ${DEVELOPER_HOME}
 
 ## install python
 if [ "${PY_VERS}" == "" ]; then
@@ -90,13 +68,5 @@ else
     install_python_version $v
   done
 fi
-
-## clean up
-env DEBIAN_FRONTEND=noninteractive apt-get -y remove \
-    libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
-    libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
-    libexpat1-dev libmpdec-dev libffi-dev
-env DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
-env DEBIAN_FRONTEND=noninteractive apt-get clean
 
 exit 0

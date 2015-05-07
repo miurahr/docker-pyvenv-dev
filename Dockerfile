@@ -18,19 +18,24 @@ MAINTAINER miurahr@linux.com
 ENV PY_VERS 3.4.3 2.7.9 pypy3-2.4.0 pypy-2.5.0
 ENV PY_VER 3.4.3
 COPY setup-venv.sh /tmp/
-RUN chmod +x /tmp/setup-venv.sh
-RUN /tmp/setup-venv.sh
-
-RUN apt-get -q -y install byobu && apt-get clean
+COPY prepare-venv.sh /tmp/
+COPY clean-venv.sh /tmp/
+RUN chmod +x /tmp/*-venv.sh && \
+    /tmp/prepare-venv.sh
 
 USER pyuser
 ENV HOME /home/pyuser
 ENV USER pyuser
 ENV PYENV_ROOT ${HOME}/.pyenv
 WORKDIR /home/pyuser
-RUN mkdir -p ${HOME}/workspace && \
+RUN /tmp/setup-venv.sh && \
+    mkdir -p ${HOME}/workspace && \
     byobu-launcher-install -n
 
+USER root
+RUN /tmp/clean-venv.sh
+
+USER pyuser
 VOLUME ["${HOME}/workspace"]
 ENTRYPOINT ["/bin/bash"]
 
