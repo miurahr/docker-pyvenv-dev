@@ -55,7 +55,7 @@ PYENV_ROOT=${DEVELOPER_HOME}/.pyenv
 cd ${DEVELOPER_HOME}
 
 function run_as_user () {
-  sudo -u ${DEVELOPER} -E -H $*
+  sudo -u ${DEVELOPER} -E -H env PATH=${PATH} $*
 }
 
 function append_bashrc () {
@@ -92,7 +92,7 @@ else
 fi
 
 ## clean up
-env DEBIAN_FRONTEND=noninteractive apt-get -y remove git-core \
+env DEBIAN_FRONTEND=noninteractive apt-get -y remove \
     libc6-dev libreadline6-dev zlib1g-dev libbz2-dev libncursesw5-dev \
     libssl-dev libgdbm-dev libdb-dev libsqlite3-dev liblzma-dev tk-dev \
     libexpat1-dev libmpdec-dev libffi-dev
