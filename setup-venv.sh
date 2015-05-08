@@ -35,8 +35,8 @@ fi
 
 PYENV_ROOT=${DEVELOPER_HOME}/.pyenv
 
-run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
-run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
+git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
+git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 
 RCFILE=${DEVELOPER_HOME}/.bashrc
 echo "export PYENV_ROOT=${PYENV_ROOT}" >> $RCFILE
