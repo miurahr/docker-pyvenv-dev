@@ -13,12 +13,8 @@
 # project home: github.com/miurahr/docker-pyvenv-dev
 #
 ####################################################
-DEVELOPER=pyuser
-DEVELOPER_HOME=/home/${DEVELOPER}
-
-function run_as_user () {
-  sudo -u ${DEVELOPER} -E -H env PATH=${PATH} $*
-}
+USER=${USER:-py}
+HOME=${HOME:-/home/${USER}}
 
 env DEBIAN_FRONTEND=noninteractive apt-get update
 env DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
@@ -32,11 +28,8 @@ env DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
     libexpat1-dev libmpdec-dev libffi-dev \
     mime-support
 
-useradd -m ${DEVELOPER}
-echo "${DEVELOPER} ALL=(ALL) NOPASSWD: ALL" >>  /etc/sudoers
-PYENV_ROOT=${DEVELOPER_HOME}/.pyenv
-
-run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
-run_as_user git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
+# create user who can do sudo without password.
+useradd -d ${HOME} -m ${USER}
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>  /etc/sudoers
 
 exit 0

@@ -14,8 +14,8 @@
 #
 ####################################################
 set -e
-DEVELOPER=pyuser
-DEVELOPER_HOME=/home/${DEVELOPER}
+export USER=${USER:-pyuser}
+export HOME=${HOME:-/home/${USER}}
 
 # Environment variable for building
 #
@@ -33,12 +33,12 @@ else
   echo "default version is ${PY_VER}."
 fi
 
-PYENV_ROOT=${DEVELOPER_HOME}/.pyenv
+PYENV_ROOT=${HOME}/.pyenv
 
 git clone --quiet --depth 1 https://github.com/yyuu/pyenv.git ${PYENV_ROOT}
 git clone --quiet --depth 1 https://github.com/yyuu/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 
-RCFILE=${DEVELOPER_HOME}/.bashrc
+RCFILE=${HOME}/.bashrc
 echo "export PYENV_ROOT=${PYENV_ROOT}" >> $RCFILE
 echo "export PATH=${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}" >> $RCFILE
 echo 'eval "$(pyenv init -)"' >> $RCFILE
@@ -46,7 +46,6 @@ echo 'eval "$(pyenv-virtualenv-init -)"' >> $RCFILE
 source $RCFILE
 
 export PATH=${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}
-export HOME=${DEVELOPER_HOME}
 
 function install_python_version () {
   local ver=$1
@@ -57,7 +56,7 @@ function install_python_version () {
   pip install --upgrade pip
 }
 
-cd ${DEVELOPER_HOME}
+cd ${HOME}
 
 ## install python
 if [ "${PY_VERS}" == "" ]; then

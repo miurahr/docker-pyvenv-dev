@@ -6,13 +6,19 @@ docker-pyvenv-dev
 Python application development environment based on pyenv
 
 
+Caution
+--------
+
+This docker image is quite large (> 1GB), please pull with caution.
+
+
 How to use
 -----------
 
-Login, launch byobu and activating python
+When launch docker image, it automatically login, launch byobu and activating pyenv
 
 ```
-$ docker exec -it miurahr/pyvenv
+$ docker exec -it -u py miurahr/pyvenv
 ```
 
 Please see command details at [Pyenv Commands](https://github.com/yyuu/pyenv/blob/master/COMMANDS.md)
@@ -21,8 +27,8 @@ Please see command details at [Pyenv Commands](https://github.com/yyuu/pyenv/blo
 Directories and files
 ----------------------
 
-* /home/pyuser/        - working user
-* /home/pyuser/.pyenv/ - pyenv files
+* /home/py/        - working user
+* /home/py/.pyenv/ - pyenv files
 
 Guest user
 ------------
@@ -34,10 +40,12 @@ Python Versions
 
 It has following python versions:
 
-  - CPython 3.4.3
-  - CPython 2.7.9
+  - Python 3.4.3
+  - Python 2.7.9
   - PyPy  2.5.0
   - PyPy3 2.4.0
+
+You can switch python version with `pyenv` command
 
 How to build
 -------------
